@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #cv {
+            box-shadow: 3px 3px 15px gray;
+            margin-left: 15%;
+            
+        }
+        p{
+        		position:absolute;
+        		left:18%
+        }
+    </style>
+</head>
+
+<body>
+	<p>得分:0</p>
+    <canvas id="cv" width="320" height="568"></canvas>
+</body>
+<script src="loading.js"></script>
+<script src="bg.js"></script>
+<script src="hero.js"></script>
+<script src="bullet.js"></script>
+<script src="enemy.js"></script>
+<script src="crash.js"></script>
+<script src="prop.js"></script>
+<script>
+	var p=document.getElementsByTagName('p')[0];
+	var score=0;
+    //创建画布和上下文
+    var cv = document.getElementById('cv');
+    var ctx = cv.getContext('2d');
+
+    var cw = cv.width;
+    var ch = cv.height;
+
+    var timer = null;
+
+    //预加载图片资源
+    loadImg(ctx, function () {
+        timer = setInterval(function () {
+            //开始游戏
+            gameStart();
+            //主机坠毁,游戏结束
+            if (hero.isOver) {
+                clearInterval(timer);
+                timer = null;
+            }
+            p.innerHTML='得分:'+score;
+        }, 30);
+    });
+
+
+    function gameStart() {
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        //绘制背景
+        drawBg();
+        //判断碰撞
+        crash();
+        //绘制我方飞机
+        drawHero();
+        //绘制子弹
+        drawBullets();
+        //绘制炸弹
+        drawBoms();
+        //绘制敌方飞机
+        drawEnemys();
+        //绘制物资
+        drawProps();
+    }
+</script>
+
+</html>
